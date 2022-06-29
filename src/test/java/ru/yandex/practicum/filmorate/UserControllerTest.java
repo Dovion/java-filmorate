@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,16 +12,16 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UserControllerTest {
 
@@ -35,8 +34,9 @@ class UserControllerTest {
     private UserController userController;
     @Autowired
     private TestRestTemplate restTemplate;
+
     @AfterEach
-    void clear () {
+    void clear() {
         userController.deleteHelper();
     }
 
@@ -55,6 +55,7 @@ class UserControllerTest {
         ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
         Assertions.assertEquals(200, result.getStatusCodeValue());
     }
+
     @Test
     void shouldReturnEmptyResponseBodyAfterGetRequestWithoutPostRequestsBefore() throws URISyntaxException { //TODO
         String baseUrl = "http://localhost:" + port + "/users/";
@@ -62,7 +63,7 @@ class UserControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", "application/json");
         ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
-        Assertions.assertEquals("{}", result.getBody());
+        Assertions.assertEquals("[]", result.getBody());
     }
 
     @Test
@@ -89,7 +90,7 @@ class UserControllerTest {
         User updatedUser = new User(1, "ex@example.ru", "logo", "newName", LocalDate.of(2021, 12, 12));
         restTemplate.put(String.valueOf(uri), updatedUser, User.class);
         ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
-        Assertions.assertEquals(Map.of(updatedUser.getId(), updatedUser).toString(), result.getBody());
+        Assertions.assertEquals(List.of(gson.toJson(updatedUser)).toString(), result.getBody());
     }
 
     @Test
@@ -164,7 +165,7 @@ class UserControllerTest {
         HttpEntity<User> request = new HttpEntity<>(user, headers);
         restTemplate.postForEntity(uri, request, String.class);
         ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
-        Assertions.assertEquals(Map.of(user.getId(), user).toString(), result.getBody());
+        Assertions.assertEquals(List.of(gson.toJson(user)).toString(), result.getBody());
     }
 
 }

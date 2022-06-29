@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Data
 public class User {
-    //@NotNull(message = "Ошибка при создании пользователя: ID пользователя не может быть пустым")
     private Integer id;
     @NotBlank(message = "Ошибка при создании пользователя: Email пользователя не может быть пустым")
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$", message = "Ошибка при создании пользователя: Email пользователя не соответствует нужному формату")
