@@ -5,22 +5,19 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.model.ValidationException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private HashMap<Integer, User> users = new HashMap<>();
+    private Map<Integer, User> users = new HashMap<>();
 
     @GetMapping
     public List<User> getUsers() {
@@ -45,7 +42,7 @@ public class UserController {
             log.warn("Ошибка при добавлении пользователя: указана неправильная дата рождения");
             throw new ValidationException("Дата рождения не может быть в будущем");
         }
-        if (user.getName() == null || user.getName() == "") {
+        if (user.getName() == null || user.getName().isEmpty()) {
             log.info("Имя пользователя отсутствует, теперь логин является именем пользователя");
             user.setName(user.getLogin());
         }
@@ -58,6 +55,9 @@ public class UserController {
                 userIDs.add(id);
             }
             var minID = Collections.min(userIDs);
+            if (minID > 1) {
+                minID = 0;
+            }
             for (Integer i : userIDs) {
                 if (!userIDs.contains(minID + 1)) {
                     user.setId(minID + 1);

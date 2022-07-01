@@ -5,25 +5,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.ValidationException;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
 
-    private HashMap<Integer, Film> films = new HashMap<>();
+    private Map<Integer, Film> films = new HashMap<>();
 
     @GetMapping
-    public List<Film> getFilms() {
+    public List<Film> getAll() {
         List<Film> filmsList = new ArrayList<>();
         for (var film : films.values()) {
             filmsList.add(film);
@@ -32,7 +29,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film postFilm(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException {
+    public Film create(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException {
         log.info("Добавляем фильм...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
@@ -58,6 +55,9 @@ public class FilmController {
                 userIDs.add(id);
             }
             var minID = Collections.min(userIDs);
+            if (minID > 1) {
+                minID = 0;
+            }
             for (Integer i : userIDs) {
                 if (!userIDs.contains(minID + 1)) {
                     film.setId(minID + 1);
@@ -73,7 +73,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film putOrUpdateFilm(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException {
+    public Film update(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException {
         log.info("Обновляем фильм...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();

@@ -2,10 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -19,6 +16,7 @@ public class User {
     private String login;
     private String name;
     @NotNull(message = "Ошибка при создании пользователя: дата рождения пользователя не может быть пустой")
+    @PastOrPresent
     private LocalDate birthday;
 
     public User(Integer id, String email, String login, String name, LocalDate birthday) {
