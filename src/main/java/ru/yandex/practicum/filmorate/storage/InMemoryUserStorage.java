@@ -93,4 +93,8 @@ public class InMemoryUserStorage implements UserStorage {
     public Map<Integer, User> getUsersMap() {
         return users;
     }
+
+    public void deleteHelper() {
+        users.clear();
+    }
 }

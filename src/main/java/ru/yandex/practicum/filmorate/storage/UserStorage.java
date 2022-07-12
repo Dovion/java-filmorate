@@ -18,4 +18,6 @@ public interface UserStorage {
     public User getItem(Integer id) throws NotFoundException;
 
     public Map<Integer, User> getUsersMap();
+
+    public void deleteHelper();
 }

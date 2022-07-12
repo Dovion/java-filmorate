@@ -74,4 +74,8 @@ public class FilmController {
         return service.getItem(id);
     }
 
+    public void deleteHelper() {
+        service.deleteHelper();
+    }
+
 }

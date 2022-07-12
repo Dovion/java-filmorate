@@ -104,5 +104,9 @@ public class FilmService {
         return storage.getItem(id);
     }
 
+    public void deleteHelper() {
+        storage.deleteHelper();
+    }
+
 
 }

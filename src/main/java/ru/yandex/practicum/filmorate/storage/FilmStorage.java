@@ -18,4 +18,6 @@ public interface FilmStorage {
     public Film getItem(Integer id) throws NotFoundException;
 
     public Map<Integer, Film> getFilmsMap();
+
+    public void deleteHelper();
 }

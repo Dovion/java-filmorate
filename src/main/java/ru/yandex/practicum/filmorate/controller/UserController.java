@@ -79,4 +79,8 @@ public class UserController {
         return service.getItem(id);
     }
 
+    public void deleteHelper() {
+        service.deleteHelper();
+    }
+
 }

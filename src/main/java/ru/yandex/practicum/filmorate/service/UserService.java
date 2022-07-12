@@ -125,5 +125,9 @@ public class UserService {
         log.info("Возврат списка общих друзей произошёл успешно");
         return friends;
     }
+
+    public void deleteHelper() {
+        storage.deleteHelper();
+    }
 }
 

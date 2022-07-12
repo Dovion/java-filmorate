@@ -93,4 +93,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films;
     }
 
+    public void deleteHelper() {
+        films.clear();
+    }
+
 }
