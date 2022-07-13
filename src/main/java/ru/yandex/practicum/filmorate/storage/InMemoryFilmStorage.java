@@ -25,16 +25,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film create(Film film) throws ValidationException {
-        log.info("Добавляем фильм...");
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            log.warn("Ошибка при добавлении фильма: неверная дата релиза");
-            throw new ValidationException("Дата релиза — не раньше 28 декабря 1895 года");
-        }
-        if (film.getDuration() <= 0) {
-            log.warn("Ошибка при добавлении фильма: нулевая продолжительность");
-            throw new ValidationException("Продолжительность фильма должна быть положительной");
-        }
+    public Film create(Film film) {
         if (film.getId() == null && films.isEmpty()) {
             film.setId(1);
         }
@@ -62,30 +53,16 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film update(Film film) throws NotFoundException {
-        log.info("Обновляем фильм...");
-        if (films.containsKey(film.getId())) {
+    public Film update(Film film) {
             log.info("Фильм успешно обновлён");
             films.put(film.getId(), film);
             return films.get(film.getId());
-        }
-        log.warn("Ошибка при добавлении фильма: отсутствует ID");
-        throw new NotFoundException("ID фильма отсутствует в базе данных");
     }
 
     @Override
-    public Film getItem(Integer id) throws NotFoundException {
-        log.info("Выводим один фильм...");
-        if(id < 0){
-            log.warn("Ошибка при выводе фильма: Передан отрицательный ID");
-            throw new NotFoundException("Передан отрицательный ID");
-        }
-        try {
+    public Film getItem(int id) {
             log.info("Вывод фильма произошёл успешно");
             return films.get(id);
-        } catch (NullPointerException e) {
-            return null;
-        }
     }
 
     @Override

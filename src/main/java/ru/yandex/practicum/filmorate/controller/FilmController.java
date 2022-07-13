@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -21,7 +22,8 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController {
 
-    FilmService service;
+    @Autowired
+    private FilmService service;
 
     @GetMapping
     public List<Film> getAll() {
@@ -30,7 +32,6 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException {
-        log.info("Добавляем фильм...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {
@@ -43,7 +44,6 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException, NotFoundException {
-        log.info("Обновляем фильм...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {

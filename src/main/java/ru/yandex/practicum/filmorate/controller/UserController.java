@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -21,7 +22,8 @@ import java.util.Set;
 @RequestMapping("/users")
 public class UserController {
 
-    UserService service;
+    @Autowired
+    private UserService service;
 
     @GetMapping
     public List<User> getAll() {
@@ -30,7 +32,6 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody @Valid User user, BindingResult result, Errors fieldError) throws ValidationException {
-        log.info("Добавляем пользователя...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {
@@ -43,7 +44,6 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody @Valid User user, BindingResult result, Errors fieldError) throws ValidationException, NotFoundException {
-        log.info("Обновляем пользователя...");
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {

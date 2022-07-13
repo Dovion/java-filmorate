@@ -11,11 +11,11 @@ public interface UserStorage {
 
     public List<User> getAll();
 
-    public User create(User user) throws ValidationException;
+    public User create(User user);
 
-    public User update(User user) throws ValidationException, NotFoundException;
+    public User update(User user);
 
-    public User getItem(Integer id) throws NotFoundException;
+    public User getItem(int id);
 
     public Map<Integer, User> getUsersMap();
 

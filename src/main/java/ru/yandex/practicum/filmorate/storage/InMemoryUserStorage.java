@@ -2,11 +2,8 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
@@ -26,16 +23,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User create(User user) throws ValidationException {
-        log.info("Добавляем пользователя...");
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.warn("Ошибка при добавлении пользователя: указана неправильная дата рождения");
-            throw new ValidationException("Дата рождения не может быть в будущем");
-        }
-        if (user.getName() == null || user.getName().isEmpty()) {
-            log.info("Имя пользователя отсутствует, теперь логин является именем пользователя");
-            user.setName(user.getLogin());
-        }
+    public User create(User user) {
         if (user.getId() == null && users.isEmpty()) {
             user.setId(1);
         }
@@ -63,30 +51,16 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User update(User user) throws NotFoundException {
-        log.info("Обновляем пользователя...");
-        if (users.containsKey(user.getId())) {
+    public User update(User user) {
             log.info("Пользователь успешно обновлён");
             users.put(user.getId(), user);
             return users.get(user.getId());
-        }
-        log.warn("Ошибка при обновлении пользователя: указан неверный ID");
-        throw new NotFoundException("ID пользователя отсутствует в базе данных");
     }
 
     @Override
-    public User getItem(Integer id) throws NotFoundException {
-        log.info("Выводим одного пользователя...");
-        if(id < 0){
-            log.warn("Ошибка при выводе пользователя: Передан отрицательный ID");
-            throw new NotFoundException("Передан отрицательный ID");
-        }
-        try {
+    public User getItem(int id) {
             log.info("Вывод пользователя произошёл успешно");
             return users.get(id);
-        } catch (NullPointerException e) {
-            return null;
-        }
     }
 
     @Override

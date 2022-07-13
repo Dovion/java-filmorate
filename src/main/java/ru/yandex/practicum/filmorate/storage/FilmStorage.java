@@ -11,11 +11,11 @@ public interface FilmStorage {
 
     public List<Film> getAll();
 
-    public Film create(Film film) throws ValidationException;
+    public Film create(Film film);
 
-    public Film update(Film film) throws ValidationException, NotFoundException;
+    public Film update(Film film);
 
-    public Film getItem(Integer id) throws NotFoundException;
+    public Film getItem(int id);
 
     public Map<Integer, Film> getFilmsMap();
 
