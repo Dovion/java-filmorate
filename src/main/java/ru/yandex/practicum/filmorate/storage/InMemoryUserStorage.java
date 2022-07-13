@@ -52,15 +52,15 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User update(User user) {
-            log.info("Пользователь успешно обновлён");
-            users.put(user.getId(), user);
-            return users.get(user.getId());
+        log.info("Пользователь успешно обновлён");
+        users.put(user.getId(), user);
+        return users.get(user.getId());
     }
 
     @Override
     public User getItem(int id) {
-            log.info("Вывод пользователя произошёл успешно");
-            return users.get(id);
+        log.info("Вывод пользователя произошёл успешно");
+        return users.get(id);
     }
 
     @Override

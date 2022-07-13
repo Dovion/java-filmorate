@@ -82,7 +82,7 @@ public class UserService {
         var user = storage.getItem(id);
         var friendsIDs = user.getFriendsIDs();
         List<User> friends = new ArrayList<User>();
-        for (var friend: friendsIDs){
+        for (var friend : friendsIDs) {
             friends.add(storage.getItem(friend));
         }
         log.info("Возврат списка друзей произошёл успешно");
@@ -118,7 +118,7 @@ public class UserService {
 
     public User getItem(Integer id) throws NotFoundException {
         log.info("Выводим одного пользователя...");
-        if(id < 0){
+        if (id < 0) {
             log.warn("Ошибка при выводе пользователя: Передан отрицательный ID");
             throw new NotFoundException("Передан отрицательный ID");
         }
@@ -140,7 +140,7 @@ public class UserService {
         Set<Integer> generalFriends = new HashSet<Integer>(userFriends);
         generalFriends.retainAll(friendFriends);
         List<User> friends = new ArrayList<>();
-        for(var friend: generalFriends){
+        for (var friend : generalFriends) {
             friends.add(storage.getItem(friend));
         }
         log.info("Возврат списка общих друзей произошёл успешно");

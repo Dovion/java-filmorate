@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -76,7 +75,7 @@ public class FilmService {
         Collections.sort(sortedList, Comparator.comparingInt(o -> o.getWhoLikedIDs().size()));
         Collections.reverse(sortedList);
         List<Film> resultList = null;
-        if (count == null || count <= 0){
+        if (count == null || count <= 0) {
             resultList = sortedList.subList(0, Math.min(10, sortedList.size()));
         } else {
             resultList = sortedList.subList(0, Math.min(count, sortedList.size()));
@@ -112,7 +111,7 @@ public class FilmService {
 
     public Film getItem(Integer id) throws NotFoundException {
         log.info("Выводим один фильм...");
-        if(id < 0){
+        if (id < 0) {
             log.warn("Ошибка при выводе фильма: Передан отрицательный ID");
             throw new NotFoundException("Передан отрицательный ID");
         }
