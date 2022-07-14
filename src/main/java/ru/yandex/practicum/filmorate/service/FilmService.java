@@ -74,7 +74,7 @@ public class FilmService {
         }
         Collections.sort(sortedList, Comparator.comparingInt(o -> o.getWhoLikedIDs().size()));
         Collections.reverse(sortedList);
-        List<Film> resultList = null;
+        List<Film> resultList;
         if (count == null || count <= 0) {
             resultList = sortedList.subList(0, Math.min(10, sortedList.size()));
         } else {
@@ -92,10 +92,6 @@ public class FilmService {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.warn("Ошибка при добавлении фильма: неверная дата релиза");
             throw new ValidationException("Дата релиза — не раньше 28 декабря 1895 года");
-        }
-        if (film.getDuration() <= 0) {
-            log.warn("Ошибка при добавлении фильма: нулевая продолжительность");
-            throw new ValidationException("Продолжительность фильма должна быть положительной");
         }
         return storage.create(film);
     }

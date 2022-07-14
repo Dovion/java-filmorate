@@ -24,14 +24,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User create(User user) {
-        if (user.getId() == null && users.isEmpty()) {
+        if (user.getId() == null && users.isEmpty()) { // Разъяснения присутствуют в комментариях: https://github.com/Dovion/java-filmorate/pull/3#discussion_r921617965
             user.setId(1);
         }
         if (user.getId() == null) {
-            List<Integer> userIDs = new ArrayList<>();
-            for (Integer id : users.keySet()) {
-                userIDs.add(id);
-            }
+            List<Integer> userIDs = new ArrayList<>(users.keySet());
             var minID = Collections.min(userIDs);
             if (minID > 1) {
                 minID = 0;

@@ -23,14 +23,11 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film create(Film film) {
-        if (film.getId() == null && films.isEmpty()) {
+        if (film.getId() == null && films.isEmpty()) { // Разъяснения присутствуют в комментариях: https://github.com/Dovion/java-filmorate/pull/3#discussion_r921617965
             film.setId(1);
         }
         if (film.getId() == null) {
-            List<Integer> userIDs = new ArrayList<>();
-            for (Integer id : films.keySet()) {
-                userIDs.add(id);
-            }
+            List<Integer> userIDs = new ArrayList<>(films.keySet());
             var minID = Collections.min(userIDs);
             if (minID > 1) {
                 minID = 0;
