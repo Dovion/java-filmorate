@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class Film {
@@ -20,6 +22,7 @@ public class Film {
     @NotNull(message = "Ошибка при создании фильма: продолжительность фильма не может быть пустой")
     @Min(1)
     private Integer duration;
+    private Set<Integer> whoLikedIDs;
 
     public Film(Integer id, String name, String description, LocalDate releaseDate, Integer duration) {
         this.id = id;
@@ -27,5 +30,6 @@ public class Film {
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
+        this.whoLikedIDs = new HashSet<Integer>();
     }
 }

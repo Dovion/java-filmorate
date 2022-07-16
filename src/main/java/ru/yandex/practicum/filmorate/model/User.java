@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class User {
@@ -18,6 +20,7 @@ public class User {
     @NotNull(message = "Ошибка при создании пользователя: дата рождения пользователя не может быть пустой")
     @PastOrPresent
     private LocalDate birthday;
+    private Set<Integer> friendsIDs;
 
     public User(Integer id, String email, String login, String name, LocalDate birthday) {
         this.id = id;
@@ -25,5 +28,6 @@ public class User {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
+        this.friendsIDs = new HashSet<Integer>();
     }
 }
