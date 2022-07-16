@@ -10,16 +10,12 @@ import java.util.*;
 @Component
 public class InMemoryUserStorage implements UserStorage {
 
-    private Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
 
     @Override
     public List<User> getAll() {
-        List<User> usersList = new ArrayList<>();
-        for (var user : users.values()) {
-            usersList.add(user);
-        }
-        return usersList;
+        return new ArrayList<>(users.values());
     }
 
     @Override

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.FailureException;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -25,15 +25,15 @@ public class FilmService {
     @Autowired
     UserStorage userStorage;
 
-    public void addLike(Integer filmId, Integer userId) throws NotFoundException {
+    public void addLike(int filmId, int userId) throws EntityNotFoundException {
         log.info("Добавляем лайк...");
         if (!storage.getFilmsMap().containsKey(filmId)) {
             log.warn("Ошибка при добавлении лайка: Передан несуществующий ID фильма");
-            throw new NotFoundException("ID фильма должен присутствовать в базе данных");
+            throw new EntityNotFoundException("ID фильма должен присутствовать в базе данных");
         }
         if (!userStorage.getUsersMap().containsKey(userId)) {
             log.warn("Ошибка при добавлении лайка: Указан неверный ID пользователя");
-            throw new NotFoundException("Передан неверный ID пользователя");
+            throw new EntityNotFoundException("Передан неверный ID пользователя");
         }
         var film = storage.getItem(filmId);
         var likeIDs = film.getWhoLikedIDs();
@@ -43,15 +43,15 @@ public class FilmService {
         log.info("Лайк успешно добавлен");
     }
 
-    public void removeLike(Integer filmId, Integer userId) throws NotFoundException, FailureException {
+    public void removeLike(int filmId, int userId) throws EntityNotFoundException, FailureException {
         log.info("Удаляем лайк...");
         if (!storage.getFilmsMap().containsKey(filmId)) {
             log.warn("Ошибка при удалении лайка: Передан несуществующий ID фильма");
-            throw new NotFoundException("ID фильма должен присутствовать в базе данных");
+            throw new EntityNotFoundException("ID фильма должен присутствовать в базе данных");
         }
         if (!userStorage.getUsersMap().containsKey(userId)) {
             log.warn("Ошибка при удалении лайка: Указан неверный ID пользователя");
-            throw new NotFoundException("Передан неверный ID пользователя");
+            throw new EntityNotFoundException("Передан неверный ID пользователя");
         }
         var film = storage.getItem(filmId);
         var likeIDs = film.getWhoLikedIDs();
@@ -96,20 +96,20 @@ public class FilmService {
         return storage.create(film);
     }
 
-    public Film update(Film film) throws NotFoundException {
+    public Film update(Film film) throws EntityNotFoundException {
         log.info("Обновляем фильм...");
         if (!storage.getFilmsMap().containsKey(film.getId())) {
             log.warn("Ошибка при добавлении фильма: отсутствует ID");
-            throw new NotFoundException("ID фильма отсутствует в базе данных");
+            throw new EntityNotFoundException("ID фильма отсутствует в базе данных");
         }
         return storage.update(film);
     }
 
-    public Film getItem(Integer id) throws NotFoundException {
+    public Film getItem(int id) throws EntityNotFoundException {
         log.info("Выводим один фильм...");
         if (id < 0) {
             log.warn("Ошибка при выводе фильма: Передан отрицательный ID");
-            throw new NotFoundException("Передан отрицательный ID");
+            throw new EntityNotFoundException("Передан отрицательный ID");
         }
         return storage.getItem(id);
     }

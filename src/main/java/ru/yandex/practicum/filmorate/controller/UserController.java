@@ -7,12 +7,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody @Valid User user, BindingResult result, Errors fieldError) throws ValidationException, NotFoundException {
+    public User update(@RequestBody @Valid User user, BindingResult result, Errors fieldError) throws ValidationException, EntityNotFoundException {
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {
@@ -54,27 +55,27 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) throws ValidationException, NotFoundException {
+    public void addFriend(@PathVariable @NotNull Integer id, @PathVariable @NotNull Integer friendId) throws EntityNotFoundException {
         service.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) throws ValidationException, NotFoundException {
+    public void deleteFriend(@PathVariable @NotNull Integer id, @PathVariable @NotNull Integer friendId) throws EntityNotFoundException {
         service.deleteFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getAllFriends(@PathVariable Integer id) throws ValidationException, NotFoundException {
+    public List<User> getAllFriends(@PathVariable @NotNull Integer id) throws EntityNotFoundException {
         return service.getAllFriends(id);
     }
 
     @GetMapping("{id}/friends/common/{otherId}")
-    public List<User> getGeneralFriends(@PathVariable Integer id, @PathVariable Integer otherId) throws ValidationException, NotFoundException {
+    public List<User> getGeneralFriends(@PathVariable @NotNull Integer id, @PathVariable @NotNull Integer otherId) throws EntityNotFoundException {
         return service.getGeneralFriends(id, otherId);
     }
 
     @GetMapping("{id}")
-    public User getItem(@PathVariable Integer id) throws NotFoundException {
+    public User getItem(@PathVariable @NotNull Integer id) throws EntityNotFoundException {
         return service.getItem(id);
     }
 

@@ -9,16 +9,12 @@ import java.util.*;
 @Slf4j
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-    private Map<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>();
 
 
     @Override
     public List<Film> getAll() {
-        List<Film> filmsList = new ArrayList<>();
-        for (var film : films.values()) {
-            filmsList.add(film);
-        }
-        return filmsList;
+        return new ArrayList<>(films.values());
     }
 
     @Override

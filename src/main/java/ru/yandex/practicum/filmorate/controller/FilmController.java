@@ -8,12 +8,13 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.FailureException;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -43,7 +44,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film update(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException, NotFoundException {
+    public Film update(@RequestBody @Valid Film film, BindingResult result, Errors fieldError) throws ValidationException, EntityNotFoundException {
         if (fieldError.hasErrors()) {
             List<FieldError> errors = result.getFieldErrors();
             for (FieldError error : errors) {
@@ -55,12 +56,12 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Integer id, @PathVariable Integer userId) throws ValidationException, NotFoundException {
+    public void addLike(@PathVariable @NotNull Integer id, @PathVariable @NotNull Integer userId) throws EntityNotFoundException {
         service.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) throws ValidationException, NotFoundException, FailureException {
+    public void removeLike(@PathVariable @NotNull Integer id, @PathVariable @NotNull Integer userId) throws EntityNotFoundException, FailureException {
         service.removeLike(id, userId);
     }
 
@@ -70,7 +71,7 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getItem(@PathVariable Integer id) throws NotFoundException {
+    public Film getItem(@PathVariable @NotNull Integer id) throws EntityNotFoundException {
         return service.getItem(id);
     }
 
